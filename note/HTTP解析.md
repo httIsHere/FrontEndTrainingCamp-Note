@@ -1,3 +1,48 @@
+### STEP 1: 文件拆分
+
+> parse接受HTML文本作为参数，返回一棵DOM树。
+
+为了方便管理，单独拆分出`parser.js`。
+
+### STEP 2: 创建状态机
+
+- 使用FSM实现HTML的分析；
+- 在[HTML标准](https://html.spec.whatwg.org/multipage/parsing.html#data-state)中已经规定了HTML的状态；
+- toy-browser仅使用其中几个简单的状态；
+
+### STEP 3: 解析标签
+
+- 主要的标签：开始标签，结束标签和自封闭标签；
+- 暂时忽略属性；
+
+### STEP 4: 创建元素
+
+- 在状态机中，除了状态歉意，还需加入业务逻辑；
+- 在标签结束状态提交标签token；
+
+### STEP 5: 处理属性
+
+- 属性值分为单引号，双引号，无引号三种写法，需要多种状态处理；
+- 处理属性的方式跟标签类似；
+- 属性结束时，需要把属性加到标签Token上；
+
+### STEP 6: 构建DOM树
+
+- 从标签构建DOM树的基本技巧就是使用栈；
+- 遇到开始标签时创建元素并入栈，遇到结束标签时出栈；
+- 自封闭节点可视为入栈后立即出栈；
+- 任何元素的父元素是它入栈前的栈顶；
+
+### STEP 7: 文本节点
+
+- 文本节点与自封闭标签处理类似；
+- 多个文本节点需要合并；
+
+
+
+### 主要代码
+
+```js
 /*
  * @Author: httishere
  * @Date: 2021-09-24 11:06:02
@@ -253,3 +298,5 @@ module.exports.parseHTML = function parseHTML(html) {
   state = state(EOF);
   console.log(stack[0]);
 };
+```
+
