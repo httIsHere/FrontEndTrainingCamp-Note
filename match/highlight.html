@@ -1,0 +1,35 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-18 16:56:47
+ * @LastEditTime: 2021-09-18 17:10:49
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /Note/match/highlight.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>highlight</title>
+    <style>
+        .result-highlight {color: #027cdb;}
+    </style>
+</head>
+<body>
+    <ul>
+        <li>I am from China</li>
+        <li>I come from China</li>
+        <li>It's a china cup</li>
+        <li>I am from CHINa</li>
+        <li>I come from ChinA</li>
+        <li>It's a chIna cup</li>
+    </ul>
+</body>
+<script src="./result-highlight.js"></script>
+<script>
+
+    searchResultsHighLight(document.getElementsByTagName('li'), 'china')
+</script>
+</html>

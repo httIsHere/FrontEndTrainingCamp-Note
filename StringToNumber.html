@@ -1,0 +1,55 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-19 20:12:58
+ * @LastEditTime: 2021-08-19 21:19:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /undefined/Users/httishere/workspace/httishere/训练营(www.dmzshequ.com)/Note/StringToNumber.html
+-->
+<script>
+    function convertStringToNumber(string, x) {
+        let charts = string.split('');
+        let number = 0;
+        for (let i = 0; i < charts.length; i++) {
+            number = number * x;
+            number += charts[i].codePointAt(0) - '0'.codePointAt(0);
+        }
+        return number;
+    }
+    function convertStringToNumber2(string, x = 10) {
+        let charts = string.split('');
+        let number = 0, i = 0;
+        while (i < charts.length && charts[i] !== '.') {
+            number = number * x;
+            number += charts[i].codePointAt(0) - '0'.codePointAt(0);
+            i++;
+        }
+        if(charts[i] === '.') i++;
+        let fraction = 1; // 小数
+        while (i < charts.length) {
+            fraction = fraction / x;
+            number += (charts[i].codePointAt(0) - '0'.codePointAt(0)) * fraction;
+            i++;
+        }
+        return number;
+    }
+    convertStringToNumber2('10.0122')
+
+    function convertNumberToString(number, x = 10) {
+        let integer = Math.floor(number);
+        let fraction = number - integer; // 如果这样，由于浮点数不精准可能会出现多位小数
+        let str = '';
+        // 整数部分
+        while (integer > 0) {
+            str = integer % x + str;
+            integer = Math.floor(integer / x);
+        }
+        str += '.';
+        while (fraction - Math.floor(fraction) > 0) {
+            fraction = fraction * x;
+            str += Math.floor(fraction);
+        }
+        return str;
+    }
+    convertNumberToString(111.222)
+</script>
