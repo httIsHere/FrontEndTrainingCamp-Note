@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-09-13 15:28:25
- * @LastEditTime: 2021-09-24 11:06:53
+ * @LastEditTime: 2021-09-28 15:04:15
  * @LastEditors: Please set LastEditors
  * @Description: http 解析
  * @FilePath: /Note/toy-browser/client.js
  */
 
 const net = require("net");
-const parser = require("./parse");
+const parser = require("./parser");
 
 // const client = net.createConnection(
 //   {
