@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-09-27 14:50:20
- * @LastEditTime: 2021-09-29 11:52:34
+ * @LastEditTime: 2021-10-12 14:17:45
  * @LastEditors: Please set LastEditors
  * @Description: 向DOM树添加CSS规则
  * @FilePath: /Note/toy-browser/CSS/index.js
@@ -36,7 +36,7 @@ function computeCss(element, stack) {
         if(!match(element, selectorParts[0]))
             continue;
 
-        console.log('matched element: ' + element.tagName + ' and ' + selectorParts[0]);
+        // console.log('matched element: ' + element + ' and ' + selectorParts[0]);
 
         // ^ 已经匹配到当前“元素”
 
@@ -62,13 +62,14 @@ function computeCss(element, stack) {
                     computeStyle[declaration.property] = {};
                 }
                 // ^ 可能会出现样式覆盖
-                computeStyle[declaration.property].value = declaration.value;
                 if(!computeStyle[declaration.property].specificity) {
                     computeStyle[declaration.property].specificity = sp;
-                } else if(compare(computeStyle[declaration.property].specificity), sp) {
+                    computeStyle[declaration.property].value = declaration.value;
+                } else if(compare(computeStyle[declaration.property].specificity, sp) < 0) {
+                    // & 优先级高的覆盖优先级低的
                     computeStyle[declaration.property].specificity = sp;
+                    computeStyle[declaration.property].value = declaration.value;
                 }
-                computeStyle[declaration.property].value = declaration.value;
             }
             element.computeStyle = computeStyle;
             // {color: {value: …}, font-size: {value: …}}
@@ -82,12 +83,12 @@ function match(element, selector) {
 
     // ^ 简单处理，仅判断id选择器，class选择器和标签选择器
     if(selector.charAt(0) === '#') {
-        let attr = element.attributes.filter(attr => attr.name === "id");
+        let attr = element.attributes.filter(attr => attr.name === "id")[0];
         if(attr && attr.value === selector.replace("#", "")) {
             return true;
         }
     } else if(selector.charAt(0) === '.') {
-        let attr = element.attributes.filter(attr => attr.name === "class");
+        let attr = element.attributes.filter(attr => attr.name === "class")[0];
         if(attr && attr.value === selector.replace(".", "")) {
             return true;
         }

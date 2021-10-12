@@ -1,7 +1,7 @@
 /*
  * @Author: httishere
  * @Date: 2021-09-24 11:06:02
- * @LastEditTime: 2021-09-29 11:54:45
+ * @LastEditTime: 2021-10-11 20:54:33
  * @LastEditors: Please set LastEditors
  * @Description: 解析HTML
  * @FilePath: /Note/toy-browser/parse.js
@@ -22,7 +22,7 @@ let stack = [{ type: "document", children: [] }];
 function emit(token) {
   let top = stack[stack.length - 1];
   if(token.type === 'startTag') {
-      console.log(token)
+      // console.log(token)
       let element = {
           type: 'element',
           children: [],
@@ -41,6 +41,7 @@ function emit(token) {
 
       // 尽可能的早计算
       cssComputer.computeCss(element, stack);
+      cssLayout.layout(element); // & 对当前元素进行layout
 
       top.children.push(element);
 
@@ -51,7 +52,7 @@ function emit(token) {
 
       currentTextNode = null;
   } else if (token.type == "endTag") {
-    console.log(token)
+    // console.log(token)
     if(top.tagName !== token.tagName) {
         throw new Error("Tag start doesn't macth the end");
     } else {
@@ -59,9 +60,9 @@ function emit(token) {
         if(top.tagName === 'style') {
           cssComputer.addCSSRules(top.children[0].content);
         }
-        cssLayout.layout(top); // & 对当前元素进行layout
         stack.pop();
     }
+    cssLayout.layout(top); // & 对当前元素进行layout
     currentTextNode = null;
   } else if(token.type === "text") {
       // 文本节点处理
@@ -266,5 +267,6 @@ module.exports.parseHTML = function parseHTML(html) {
     state = state(c);
   }
   state = state(EOF);
-  console.log(stack[0]);
+  // console.log(stack[0]);
+  return stack[0];
 };

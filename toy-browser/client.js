@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-09-13 15:28:25
- * @LastEditTime: 2021-09-28 15:04:15
+ * @LastEditTime: 2021-10-12 14:52:14
  * @LastEditors: Please set LastEditors
  * @Description: http 解析
  * @FilePath: /Note/toy-browser/client.js
@@ -9,6 +9,8 @@
 
 const net = require("net");
 const parser = require("./parser");
+const images = require("images");
+const render = require("./render");
 
 // const client = net.createConnection(
 //   {
@@ -264,6 +266,10 @@ void async function() {
     let response = await request.send();
     let dom = parser.parseHTML(response.body);
     console.log(dom)
+
+    let viewport = images(800, 600); // 渲染区域
+    render(viewport, dom.children[0].children[1]);
+    viewport.save('viewport.jpg'); // 保存为图片
 }();
 
 
